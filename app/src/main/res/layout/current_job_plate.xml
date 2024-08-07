@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:backgroundTint="@color/secoundary_background_black"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        app:cardCornerRadius="15dp"
+        android:layout_width="match_parent"
+        android:backgroundTint="@color/secoundary_background_black"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:textSize="25sp"
+                android:textColor="@color/Gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reference :513165414"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:id="@+id/current_job_reference"/>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:dividerColor="@color/white"/>
+            <GridLayout
+                android:layout_marginTop="10dp"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:textSize="20sp"
+                        android:textColor="@color/Gold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Start Date :"
+                        android:id="@+id/current_job_StartDate"/>
+
+                    <TextView
+                        android:textSize="20sp"
+                        android:textColor="@color/Gold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Details :"
+                        android:id="@+id/current_job_Details"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="end|top">
+                    <ImageButton
+                        android:id="@+id/current_job_ImageButton_Complete"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@color/secoundary_background_black"
+                        android:src="@drawable/baseline_check_24"/>
+
+                </LinearLayout>
+            </GridLayout>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>

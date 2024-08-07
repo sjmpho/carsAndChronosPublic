@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@drawable/background_picture"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Mechanic_Activities.Mech_Current_jobs">
+<TextView
+    android:background="@android:color/transparent"
+    android:layout_margin="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Current Jobs"
+    android:textColor="@color/Gold"
+    android:textStyle="bold"
+    android:textSize="25dp"
+    android:id="@+id/tv_top"/>
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_below="@id/tv_top"
+        app:dividerColor="@color/Gold"
+        android:id="@+id/devider"
+        android:layout_height="2dp"/>
+    <include
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/tv_top"
+        android:id="@+id/included_search_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/search_bar"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        tools:listitem="@layout/current_job_plate"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/included_search_bar"
+        android:id="@+id/rec_current_jobs"/>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/RL_loading_wall"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/devider"
+
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Loading_wall"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/LL_progress_Bar"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/Gold"/>
+            <TextView
+                android:id="@+id/LL_text"
+                android:textColor="@color/Gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="Loading current Jobs"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

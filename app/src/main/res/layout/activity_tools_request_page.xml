@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@drawable/background_picture"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".Mechanic_Activities.Tools_Request_Page">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:strokeWidth="1dp"
+        app:cardCornerRadius="200dp"
+        app:strokeColor="@color/Gold"
+        android:id="@+id/cardView"
+        android:backgroundTint="@color/secoundary_background_black"
+        android:background="@drawable/oval_background">
+        <RelativeLayout
+            android:background="@drawable/oval_background"
+            android:elevation="10dp"
+            android:layout_width="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_height="wrap_content">
+            <TextView
+
+                android:textColor="@color/Gold"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:id="@+id/tv_name"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tools Request"/>
+
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/Notifications"
+android:icon="@drawable/baseline_notifications_24"
+    android:title="notifications"/>
+
+    <item android:title="Current"
+        android:icon="@drawable/baseline_format_list_numbered_24"
+        android:id="@+id/CurrentJobs"/>
+    <item android:id="@+id/Assignmnts"
+        android:icon="@drawable/baseline_book_24"
+        android:title="Assignments"/>
+    <item android:title="Past Jobs"
+        android:icon="@drawable/baseline_checklist_rtl_24"
+        android:id="@+id/PastJobs"/>
+    <item android:id="@+id/Settings_mech"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Settings"/>
+</menu>

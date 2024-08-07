@@ -1,0 +1,15 @@
+<!-- res/drawable/custom_date_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#FF0000" /> <!-- Red color for selected date -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" /> <!-- Default color for non-selected dates -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+</selector>

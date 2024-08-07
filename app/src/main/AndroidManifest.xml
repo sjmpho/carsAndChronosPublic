@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CarsAndChronos"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".Mechanic_Activities.Tools_Request_Page"
+            android:exported="false" />
+        <activity
+            android:name=".Models.testing_activity"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Schedule_viewer"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Scedule_viewer"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.mech_main_new"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Mech_SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Mech_past_jobs"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Mech_Notifications"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Mech_Current_jobs"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Mech_Assigned_Jobs"
+            android:exported="false" />
+        <activity
+            android:name=".View_job_Details_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Main"
+            android:exported="false" />
+        <activity
+            android:name=".CreateBookingPage"
+            android:exported="false" />
+        <activity
+            android:name=".AdminMain"
+            android:exported="false" />
+        <activity
+            android:name=".Past_bookings_page"
+            android:exported="false" />
+        <activity
+            android:name=".ClientSide_Main"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreen_V2"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".Utility.MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.carsandchronos.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="200dp"
+        android:background="@color/secoundary_background_black"
+        android:foregroundTint="@color/secoundary_background_black">
+
+        <RelativeLayout
+
+            android:background="@color/secoundary_background_black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_margin="2dp"
+                android:hint="Search..."
+                android:textColorHint="@color/Gold"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/search_edit_text"
+                android:textColor="@color/Gold"/>
+            <ImageButton
+                android:layout_margin="2dp"
+                android:id="@+id/search_btn"
+                android:layout_width="50dp"
+                android:background="@android:color/transparent"
+                android:layout_alignParentEnd="true"
+                android:layout_height="50dp"
+                android:src="@drawable/baseline_search_24"/>
+        </RelativeLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>

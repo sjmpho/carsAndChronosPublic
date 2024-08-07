@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_picture"
+    tools:context=".View_job_Details_Activity">
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:background="@color/black"/>
+        <TextView
+            android:layout_marginEnd="50dp"
+            android:onClick="SendImage"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:text="Job View"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:id="@+id/tv"
+            android:textColor="@color/Gold"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_below="@id/ll_top"
+        android:id="@+id/div"
+        app:dividerColor="@color/Gold"
+        android:layout_height="1dp"/>
+
+    <ScrollView
+        android:layout_above="@id/below_buttons"
+        android:layout_below="@id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="match_parent">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_margin="15dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp"
+            app:cardCornerRadius="25dp"
+            android:backgroundTint="@color/secoundary_background_black"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:background="@color/secoundary_background_black"
+                android:layout_width="match_parent"
+                android:layout_margin="15dp"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:backgroundTint="@color/secoundary_background_black"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/edit_text_white_background"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:backgroundTint="@color/secoundary_background_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/JD_reference"
+                            android:layout_margin="5dp"
+                            android:layout_width="match_parent"
+                            android:text="Reference"
+                            android:gravity="center"
+                            android:textSize="25dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/Gold"
+                            android:layout_height="wrap_content"/>
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="match_parent"
+                            android:layout_below="@id/JD_reference"
+                            app:dividerColor="@color/white"
+                            android:layout_height="1dp"/>
+                        <TextView
+                            android:id="@+id/JD_startDate"
+                            android:layout_margin="5dp"
+                            android:layout_width="match_parent"
+                            android:text="Start Date : 2024/07/03"
+                            android:textSize="20dp"
+
+                            android:textColor="@color/Gold"
+                            android:layout_height="wrap_content"/>
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="match_parent"
+                            android:layout_below="@id/JD_job_details"
+                            app:dividerColor="@color/white"
+                            android:layout_height="1dp"/>
+                        <TextView
+                            android:id="@+id/JD_vehicleDetails"
+                            android:layout_margin="5dp"
+                            android:layout_width="match_parent"
+                            android:text="Vehicle :BMW M3 G80"
+                            android:textSize="20dp"
+                            android:textColor="@color/Gold"
+                            android:layout_height="wrap_content"/>
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="match_parent"
+                            android:layout_below="@id/JD_vehicleDetails"
+                            app:dividerColor="@color/white"
+                            android:layout_height="1dp"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:layout_width="match_parent"
+                            android:text="Job Details"
+                            android:textSize="20dp"
+                            android:textColor="@color/Gold"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:backgroundTint="@color/secoundary_background_black"
+                            android:id="@+id/JD_job_details"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/edit_text_white_background"
+                            android:layout_width="match_parent"
+                            android:text="Job Details"
+                            android:textSize="25dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/Gold"
+                            android:layout_height="150dp"/>
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="match_parent"
+                            android:layout_below="@id/JD_job_details"
+                            app:dividerColor="@color/white"
+                            android:layout_height="1dp"/>
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="2dp"
+                            app:cardCornerRadius="25dp"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:backgroundTint="@color/secoundary_background_black"
+                                android:layout_width="match_parent"
+                                android:background="@color/secoundary_background_black"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:id="@+id/linear_layout_images">
+
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </ScrollView>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:backgroundTint="@color/Gold"
+        app:cardCornerRadius="30dp"
+        android:background="@color/Gold"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="25dp"
+        android:layout_alignParentBottom="true"
+        >
+        <ImageButton
+
+            android:elevation="10dp"
+            android:backgroundTint="@color/Gold"
+            android:id="@+id/ImageButton"
+            android:layout_width="75dp"
+            android:layout_gravity="center"
+            android:layout_height="75dp"
+            android:src="@drawable/baseline_file_upload_24"
+            android:onClick="Upload"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <RelativeLayout
+        android:id="@+id/below_buttons"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <ImageButton
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/black"
+            android:id="@+id/View_job_Accept"
+            android:layout_width="120dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_check_24"
+         />
+        <ImageButton
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/black"
+            android:id="@+id/View_job_Decline"
+            android:layout_width="120dp"
+            android:layout_gravity="center"
+
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_close_24"
+           />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/RL_loading_wall"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/div"
+
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Loading_wall"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/LL_progress_Bar"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/Gold"/>
+            <TextView
+                android:id="@+id/LL_text"
+                android:textColor="@color/Gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="Loading Job data"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

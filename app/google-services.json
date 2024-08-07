@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "548550911795",
+    "project_id": "cars-and-chronos",
+    "storage_bucket": "cars-and-chronos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548550911795:android:158204905dcbfcf6f54046",
+        "android_client_info": {
+          "package_name": "com.example.carsandchronos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCmaqf5UNOCHnbU7xO_rnnouducHa3rQI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

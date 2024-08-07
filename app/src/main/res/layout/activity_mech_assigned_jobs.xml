@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_picture"
+
+    tools:context=".Mechanic_Activities.Mech_Assigned_Jobs">
+
+
+
+<RelativeLayout
+
+    android:background="@android:color/transparent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Job Assignments"
+        android:textSize="35dp"
+        android:background="@android:color/transparent"
+        android:id="@+id/tv_top"
+        android:textColor="@color/Gold"/>
+
+    <include
+        android:layout_below="@id/tv_top"
+        android:id="@+id/included_search_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/search_bar"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+
+        android:id="@+id/rec_mech_assigned"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/included_search_bar"/>
+
+    <RelativeLayout
+        android:visibility="visible"
+        android:id="@+id/RL_loading_wall"
+        android:background="@android:color/transparent"
+        android:backgroundTint="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_top"
+
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Loading_wall"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/LL_progress_Bar"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/Gold"/>
+            <TextView
+                android:id="@+id/LL_text"
+                android:textColor="@color/Gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="Loading Assingments"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
+
+</RelativeLayout>

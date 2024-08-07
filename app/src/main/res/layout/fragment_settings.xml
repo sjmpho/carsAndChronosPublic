@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    tools:context=".Fragments.SettingsFragment">
+<RelativeLayout
+
+    android:background="@android:color/transparent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp">
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/offlinebar"
+        android:layout_width="match_parent"
+        android:backgroundTint="@color/red"
+        android:background="@color/red"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/red"
+            android:backgroundTint="@color/red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Availibility set to offline"/>
+    </RelativeLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_below="@id/offlinebar"
+        android:layout_height="wrap_content"
+        app:strokeWidth="3dp"
+        android:background="@color/secoundary_background_black"
+        android:backgroundTint="@color/secoundary_background_black"
+        app:cardCornerRadius="15dp"
+        app:strokeColor="@color/white">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/secoundary_background_black"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/secoundary_background_black"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="90"
+                    android:id="@+id/Settings_new_leave_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Leave status Online"
+                    android:textColor="@color/Gold"
+                    android:textSize="30dp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/Settings_new_leave_status_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="0dp"
+                    android:layout_weight="30"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/Gold" />
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                app:dividerColor="@color/white" />
+
+            <TextView
+                android:id="@+id/Settings_new_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name : John"
+                android:textColor="@color/Gold"
+                android:textSize="30dp" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                app:dividerColor="@color/white" />
+
+            <TextView
+                android:id="@+id/Settings_new_Last_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last name : John"
+                android:textColor="@color/Gold"
+                android:textSize="30dp" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                app:dividerColor="@color/white" />
+
+            <TextView
+                android:id="@+id/Settings_new_Role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Role : Sound Installer"
+                android:textColor="@color/Gold"
+                android:textSize="30dp" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                app:dividerColor="@color/white" />
+
+            <TextView
+                android:id="@+id/Settings_new_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cell number: 0681818"
+                android:textColor="@color/Gold"
+                android:textSize="30dp" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                app:dividerColor="@color/white" />
+
+            <TextView
+                android:id="@+id/Settings_new_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email :ms@gmail.com"
+                android:textColor="@color/Gold"
+                android:textSize="30dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cars and chronos 2024 pty LTD"
+        android:textColor="@color/Gold"
+        android:textSize="15dp" />
+</RelativeLayout>
+   
+
+</FrameLayout>

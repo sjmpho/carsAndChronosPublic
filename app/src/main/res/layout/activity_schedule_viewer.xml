@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_picture"
+    tools:context=".Mechanic_Activities.Schedule_viewer">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            app:cardCornerRadius="200dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/Gold"
+            android:backgroundTint="@color/secoundary_background_black"
+            android:background="@color/secoundary_background_black"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_margin="10dp"
+android:background="@color/secoundary_background_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/backPressed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/secoundary_background_black"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Schedule"
+                    android:textSize="30dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="90"
+                    android:textColor="@color/Gold"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/secoundary_background_black"
+                    android:src="@drawable/baseline_menu_24"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"/>
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            app:cardCornerRadius="15dp"
+            android:layout_marginTop="25dp"
+            app:strokeColor="@color/Gold"
+            app:strokeWidth="3dp"
+            android:layout_height="wrap_content">
+            <CalendarView
+                android:id="@+id/calendarView"
+                android:backgroundTint="@color/secoundary_background_black"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+        <LinearLayout
+
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Appointment"
+                android:textSize="30dp"
+                android:layout_weight="90"
+                android:textColor="@color/Gold"/>
+
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="15dp"
+            tools:listitem="@layout/job_assign_plate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rec_schedule_recview"/>
+    </LinearLayout>
+
+
+
+</RelativeLayout>
