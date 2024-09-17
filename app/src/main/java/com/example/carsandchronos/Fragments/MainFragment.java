@@ -11,18 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.carsandchronos.Mechanic_Activities.Analytics_view;
 import com.example.carsandchronos.Mechanic_Activities.Mech_Assigned_Jobs;
 import com.example.carsandchronos.Mechanic_Activities.Mech_Current_jobs;
+import com.example.carsandchronos.Mechanic_Activities.Mech_Notifications;
 import com.example.carsandchronos.Mechanic_Activities.Mech_past_jobs;
 import com.example.carsandchronos.Mechanic_Activities.Schedule_viewer;
 import com.example.carsandchronos.Models.Mechanic;
-import com.example.carsandchronos.Models.testing_activity;
 import com.example.carsandchronos.R;
 
 
 public class MainFragment extends Fragment {
 
-    TextView Notifications,Assigned_Jobs,Current_Jobs,Past_Jobs,Request_tools,schedule;
+    TextView Notifications,Assigned_Jobs,Current_Jobs,Past_Jobs,Analytics,schedule;
     View view;
     private static final String ARG_KEY = "my_key";
     Mechanic mechanic;
@@ -44,12 +45,13 @@ public class MainFragment extends Fragment {
             mechanic = (Mechanic) getArguments().getSerializable(ARG_KEY);
             Log.d("things", "onCreateView: MechID is " + mechanic.getName());
         }
+        Analytics = view.findViewById(R.id.Analytics);
         schedule = view.findViewById(R.id.scheduler);
         Notifications = view.findViewById(R.id.tv_new_notifications);
         Assigned_Jobs = view.findViewById(R.id.tv_new_Assigmened);
         Current_Jobs  = view.findViewById(R.id.tv_new_current_jobs);
         Past_Jobs     = view.findViewById(R.id.tv_new_past_jobs);
-        Request_tools = view.findViewById(R.id.request_tools);
+
 
         schedule.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), Schedule_viewer.class);
@@ -57,7 +59,7 @@ public class MainFragment extends Fragment {
             startActivity(intent);
         });
         Notifications.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), testing_activity.class);
+            Intent intent = new Intent(getContext(), Mech_Notifications.class);
             intent.putExtra("mechanic", mechanic);
             startActivity(intent);
         });
@@ -77,9 +79,12 @@ public class MainFragment extends Fragment {
             intent.putExtra("mechanic", mechanic);
             startActivity(intent);
         });
-        Request_tools.setOnClickListener(v -> {
-
+        Analytics.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), Analytics_view.class);
+            intent.putExtra("mechanic", mechanic);
+            startActivity(intent);
         });
+
         return view;
     }
 }

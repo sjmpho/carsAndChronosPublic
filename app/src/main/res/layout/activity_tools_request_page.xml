@@ -16,14 +16,21 @@
         app:cardCornerRadius="200dp"
         app:strokeColor="@color/Gold"
         android:id="@+id/cardView"
-        android:backgroundTint="@color/secoundary_background_black"
+        android:backgroundTint="@color/black"
         android:background="@drawable/oval_background">
         <RelativeLayout
-            android:background="@drawable/oval_background"
+
             android:elevation="10dp"
             android:layout_width="wrap_content"
             android:layout_margin="15dp"
             android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_arrow_back_24"
+                android:background="@color/black"
+                android:onClick="Back"/>
             <TextView
 
                 android:textColor="@color/Gold"
@@ -34,13 +41,164 @@
                 android:layout_centerHorizontal="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tools Request"/>
+                android:text="Request Tools"/>
 
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 
 
+<ScrollView
+    android:background="@android:color/transparent"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
+    android:layout_below="@id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@id/button_req">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        app:cardCornerRadius="20dp"
+        android:backgroundTint="@color/secoundary_background_black"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Details"
+                android:background="@android:color/transparent"
+                android:textSize="25dp"
+                android:textColor="@color/Gold"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                app:strokeWidth="2dp"
+                android:layout_marginTop="15dp"
+                app:cardCornerRadius="20dp"
+                android:backgroundTint="@color/secoundary_background_black"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:inputType="number"
+                    android:textColorHint="@color/Gold"
+                    android:id="@+id/bookingNumber_tools"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Gold"
+                    android:textSize="20dp"
+                    android:hint="Booking Number..."
+                    />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                app:strokeWidth="2dp"
+                android:layout_marginTop="15dp"
+                app:cardCornerRadius="20dp"
+                android:backgroundTint="@color/secoundary_background_black"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:inputType="number"
+                    android:id="@+id/engineNumber_tools"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColorHint="@color/Gold"
+                    android:hint="Engine number..."
+                    />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                app:strokeWidth="2dp"
+                android:layout_marginTop="15dp"
+                app:cardCornerRadius="20dp"
+                android:backgroundTint="@color/secoundary_background_black"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/toolsRequest_tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/transparent"
+                    android:textSize="20sp"
+                android:hint="Tools request..."
+                    android:textColorHint="@color/Gold"
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
+                android:minLines="6"
+                android:scrollbars="vertical"
+                android:textAlignment="viewStart" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Gold"
+                    android:textSize="20dp"
+                    android:text="Specialist Needed"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:id="@+id/specialist_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/white"
+                        android:entries="@array/specialist_options" />
+                </com.google.android.material.card.MaterialCardView>
 
 
 
+
+            </LinearLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/secoundary_background_black"
+                app:strokeWidth="2dp"
+                app:cardCornerRadius="20dp">
+                <LinearLayout
+                    android:id="@+id/LinearLaynout"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</ScrollView>
+
+<Button
+    android:id="@+id/button_req"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Request"
+    android:onClick="Request"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentBottom="true"
+    android:backgroundTint="@color/Gold"/>
 </RelativeLayout>

@@ -7,7 +7,15 @@ import java.io.Serializable;
 public class Job implements Serializable {
 
     int jobId,bookingId,jobStatus,mechId;
-    String jobDescription,startDate, endDate;
+    String jobDescription,startDate, endDate,dateCompleted;
+
+    public String getDateCompleted() {
+        return dateCompleted;
+    }
+
+    public void setDateCompleted(String dateCompleted) {
+        this.dateCompleted = dateCompleted;
+    }
 
     public Job() {
     }

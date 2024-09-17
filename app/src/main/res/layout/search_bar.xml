@@ -20,6 +20,7 @@
             <EditText
                 android:layout_margin="2dp"
                 android:hint="Search..."
+                android:lines="1"
                 android:textColorHint="@color/Gold"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

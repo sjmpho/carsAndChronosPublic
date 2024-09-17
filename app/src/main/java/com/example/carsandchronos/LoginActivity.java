@@ -1,8 +1,10 @@
 package com.example.carsandchronos;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -142,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                        Mechanic mechanic = gson.fromJson(userObject.toString(), Mechanic.class);
                         // Store or use the mechanic object as needed
                         UserID = mechanic.getMechId();
+                        Utility.SetMechID(UserID);
                         sendTokenToServer();
                         Intent mechanicIntent = new Intent(LoginActivity.this, mech_main_new.class);
                         mechanicIntent.putExtra("mechanic", mechanic);
@@ -156,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             } else {
                 Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+
                 ProgressBarVisible(false);
             }
         } catch (JSONException e) {
@@ -231,5 +236,41 @@ public void GetFCM()
 
         ProgressBarVisible(true);
         loginUser();
+    }
+
+    public void SetIP(View view) {
+        // Inflate the custom layout
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialog_set_ip, null);
+
+        // Initialize the EditTexts
+        EditText etIpAddress = dialogView.findViewById(R.id.et_ip_address);
+        EditText etPort = dialogView.findViewById(R.id.et_port);
+
+        // Create the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setTitle("Set IP and Port")
+                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String ipAddress = etIpAddress.getText().toString().trim();
+                        String port = etPort.getText().toString().trim();
+
+                        Utility.setSocket(ipAddress,port);
+                        // Handle the input (for example, save or validate)
+                        Toast.makeText(LoginActivity.this, "IP: " + Utility.IP_Adress + ", Port: " + Utility.port, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); // Close the dialog
+                    }
+                });
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

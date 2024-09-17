@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
+    android:background="@android:color/transparent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -10,6 +11,7 @@
         android:backgroundTint="@color/secoundary_background_black"
         android:layout_width="match_parent"
         app:strokeColor="@color/white"
+
         app:strokeWidth="2dp"
         app:cardCornerRadius="15dp"
         android:layout_height="wrap_content">

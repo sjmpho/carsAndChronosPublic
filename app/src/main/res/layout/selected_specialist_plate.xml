@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_margin="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chasiss Specialist"
+            android:textColor="@color/Gold"
+            android:layout_weight="80"
+            android:textSize="25dp"
+            android:id="@+id/Specialist_request"/>
+      <ImageButton
+          android:id="@+id/btn_specialist_plate_remove"
+          android:background="@android:color/transparent"
+          android:layout_width="wrap_content"
+
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:src="@drawable/baseline_close_24"/>
+    </LinearLayout>
+<com.google.android.material.divider.MaterialDivider
+    android:layout_width="match_parent"
+    android:layout_height="2dp"
+    app:dividerColor="@color/white"/>
+</LinearLayout>

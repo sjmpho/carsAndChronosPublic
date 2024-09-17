@@ -3,13 +3,51 @@ package com.example.carsandchronos.Models;
 import java.sql.Timestamp;
 
 public class bookingModel {
-    private int id;
+    private int id, Payment ,Assigned;
     private String userID;
-    private String bookingDetails;
+    private String bookingDetails,Pstatus,Preference,Package;
 
     private String Job_ID,Reference_number,Vehicle_make,Vehicle_Model,Production_year,booking_type;
 
+    public int getPayment() {
+        return Payment;
+    }
 
+    public void setPayment(int payment) {
+        Payment = payment;
+    }
+
+    public int getAssigned() {
+        return Assigned;
+    }
+
+    public void setAssigned(int assigned) {
+        Assigned = assigned;
+    }
+
+    public String getPstatus() {
+        return Pstatus;
+    }
+
+    public void setPstatus(String pstatus) {
+        Pstatus = pstatus;
+    }
+
+    public String getPreference() {
+        return Preference;
+    }
+
+    public void setPreference(String preference) {
+        Preference = preference;
+    }
+
+    public String getPackage() {
+        return Package;
+    }
+
+    public void setPackage(String aPackage) {
+        Package = aPackage;
+    }
 
     public String getJob_ID() {
         return Job_ID;

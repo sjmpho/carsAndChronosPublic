@@ -13,9 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carsandchronos.Models.Job;
-import com.example.carsandchronos.Models.JobCard;
+import com.example.carsandchronos.Models.booking;
 import com.example.carsandchronos.Utility.Utility;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,13 +33,13 @@ import okhttp3.Response;
 
 public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
-    private List<JobCard> listOfJob;
+    private List<Job> listOfJob;
     Context context;
     Boolean Current_job = false;
     Boolean complete = false;
     Boolean isAssignment = false;
 
-    public JobAdapter(List<JobCard> Jobs, Context context, Boolean stat, Boolean complete, Boolean Assignment) {
+    public JobAdapter(List<Job> Jobs,Context context,Boolean stat,Boolean complete,Boolean Assignment) {
         this.listOfJob = Jobs;
         this.context = context;
         this.Current_job = stat;
@@ -44,7 +47,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         this.isAssignment = Assignment;
     }
     String Api_String ;
-          //  url = "http://"+ Utility.IP_Adress +":5132/api/Job/GetAssignedJobs/" + data;
+    //  url = "http://"+ Utility.IP_Adress +":5132/api/Job/GetAssignedJobs/" + data;
     @NonNull
     @Override
     public JobViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,30 +57,30 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
-        JobCard job = listOfJob.get(position);
-        holder.Reference.setText("Reference :"+String.valueOf(job.getBookingID()));
+        Job job = listOfJob.get(position);
+        holder.Reference.setText("Reference :"+String.valueOf(job.getBookingId()));
         holder.StartDate.setText("Start Date :"+job.getStartDate());
         holder.BookingDetails.setText("Job Description :"+job.getJobDescription());
-         Api_String ="http://"+ Utility.IP_Adress +":5132/api/Job/";
+        Api_String ="http://"+ Utility.IP_Adress +":5132/api/Job/";
 
-         if(complete)
-         {
-             holder.Decline.setVisibility(View.GONE);
-             holder.Accept.setVisibility(View.GONE);
-             holder.end_detail.setVisibility(View.VISIBLE);
-             holder.end_detail.setText("Comletion date :"+job.getEndDate());
-         }
-         holder.itemView.setOnClickListener(v -> {
+        if(complete)
+        {
+            holder.Decline.setVisibility(View.GONE);
+            holder.Accept.setVisibility(View.GONE);
+            holder.end_detail.setVisibility(View.VISIBLE);
+            holder.end_detail.setText("Completion date :"+job.getDateCompleted());
+        }
+        holder.itemView.setOnClickListener(v -> {
 
-             Intent intent = new Intent(context,View_job_Details_Activity.class);
-             intent.putExtra("Job",job);
-             intent.putExtra("bool",Current_job);
-             intent.putExtra("ShowButtons",isAssignment);
-             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-             context.startActivity(intent);
+            Intent intent = new Intent(context,View_job_Details_Activity.class);
+            intent.putExtra("Job",job);
+            intent.putExtra("bool",Current_job);
+            intent.putExtra("ShowButtons",isAssignment);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
 
 
-         });
+        });
         holder.Decline.setOnClickListener(v -> {
             DeclineJob(job, holder.getAdapterPosition());
             Log.d("tester", "onBindViewHolder: Decline is pressed");
@@ -87,8 +90,9 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             AcceptJob(job,holder.getAdapterPosition());
         });
     }
-    private void AcceptJob(JobCard job, int position) {
+    private void AcceptJob(Job job, int position) {
         //we send the job nodel here, 1 for accepted , 0 for declined
+        job.setJobStatus(1);
         job.setStartDate(Utility.getCurrentDate());
         post_It(job);
         removeItem(position);
@@ -99,23 +103,20 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, listOfJob.size());
     }
-    private void DeclineJob(JobCard job, int position) {
+    private void DeclineJob(Job job, int position) {
+        job.setJobStatus(0);
         post_It(job);
-       removeItem(position);
+        removeItem(position);
     }
-public void post_It(JobCard job)
-{
-    OkHttpClient client = new OkHttpClient();
-
-    //                                                /MECHid JOBid , sTATUS/api/Job/UpdateMechanicJobCard/
-        Api_String ="http://"+ Utility.IP_Adress +":5132/api/Job/UpdateMechanicJobCard/"+job.getJobId()+"/"+job.getMechId()+"/PROGRESS";
+    public void post_It(Job job)
+    {
+        OkHttpClient client = new OkHttpClient();
         Gson gson = new Gson();
-        job.setEndDate(Utility.getCurrentDate());
         String json = gson.toJson(job);
         RequestBody body = RequestBody.create( MediaType.parse("application/json; charset=utf-8"), json);
 
         Request request = new Request.Builder()
-                .url(Api_String)
+                .url(Api_String+job.getJobId())
                 .put(body)
                 .build();
 
@@ -129,16 +130,14 @@ public void post_It(JobCard job)
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     System.out.println("Job updated successfully.");
-                    Log.d("Tester","onResponse: Job updated successfully."+response.message());
-
-
+                    Log.d("Tester", "onResponse: Job updated successfully.");
                 } else {
                     System.out.println("Failed to update job. Response code: " + response.code());
                     Log.d("Tester", "onResponse: "+"Failed to update job. Response code: " + response.message());
                 }
             }
         });
-}
+    }
 
 
     @Override

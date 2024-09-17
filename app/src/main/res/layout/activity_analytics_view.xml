@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@drawable/background_picture"
+    android:layout_height="match_parent"
+    tools:context=".Mechanic_Activities.Analytics_view">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:strokeWidth="1dp"
+            app:cardCornerRadius="200dp"
+            app:strokeColor="@color/Gold"
+            android:backgroundTint="@color/secoundary_background_black"
+            android:background="@drawable/oval_background"
+            android:id="@+id/cardView">
+            <RelativeLayout
+                android:background="@drawable/oval_background"
+                android:elevation="10dp"
+                android:layout_width="match_parent"
+                android:layout_margin="15dp"
+                android:layout_height="wrap_content">
+                <TextView
+
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/Gold"
+                    android:textSize="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/tv_name"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Analytics"/>
+                <ImageView
+                    android:onClick="Back"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"/>
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            app:strokeWidth="1dp"
+            app:cardCornerRadius="200dp"
+            app:strokeColor="@color/Gold"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/secoundary_background_black"
+            android:background="@drawable/oval_background"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_margin="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating : "
+                    android:textColor="@color/Gold"
+                    android:textSize="30dp"/>
+
+                <RatingBar
+                    android:layout_centerVertical="true"
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:progressTint="@color/Gold"
+                    android:secondaryProgressTint="@color/Gold"
+                    android:stepSize="0.5"
+                    android:layout_margin="15dp"
+                    android:isIndicator="true"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            app:strokeWidth="1dp"
+            app:cardCornerRadius="20dp"
+            app:strokeColor="@color/Gold"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/secoundary_background_black"
+            android:background="@drawable/oval_background"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_marginStart="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Analytics_total_jobs_done_txt"
+                    android:text="Total Jobs done: 0"
+                    android:textColor="@color/Gold"
+
+                    android:textSize="30dp"/>
+                <org.eazegraph.lib.charts.PieChart
+                android:id="@+id/Pie_chart"
+                android:layout_margin="15dp"
+                android:layout_gravity="center"
+                android:layout_width="300dp"
+                android:layout_height="300dp"/>
+                <TextView
+                    android:layout_marginStart="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Analytics_overtime_txt"
+                    android:text="Over Time : 0"
+                    android:textColor="@color/red"
+                    android:textSize="30dp"/>
+                <TextView
+                    android:layout_marginStart="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Analytics_Ontime_txt"
+                    android:text="On Time : 0"
+                    android:textColor="@color/Gold"
+                    android:layout_marginBottom="15dp"
+                    android:textSize="30dp"/>
+
+            </LinearLayout>
+
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+
+</ScrollView>

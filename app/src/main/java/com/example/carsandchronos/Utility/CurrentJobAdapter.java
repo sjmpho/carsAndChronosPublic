@@ -14,14 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.carsandchronos.JobAdapter;
 import com.example.carsandchronos.Models.Job;
-import com.example.carsandchronos.Models.JobCard;
 import com.example.carsandchronos.R;
 import com.example.carsandchronos.View_job_Details_Activity;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -33,14 +32,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class CurrentJobAdapter  extends RecyclerView.Adapter<CurrentJobAdapter.CurrentViewHolder>{
-    private List<JobCard> listOfJob;
-    private List<Job> jobs;
+    private List<Job> listOfJob;
     OkHttpClient client = new OkHttpClient();
     Context context;
-    public CurrentJobAdapter(List<JobCard> Jobs , Context context) {
+    public CurrentJobAdapter(List<Job> Jobs , Context context) {
         this.listOfJob = Jobs;
         this.context = context;
-        this.jobs = new ArrayList<>();
     }
     String Api_String ;
     @NonNull
@@ -50,35 +47,27 @@ public class CurrentJobAdapter  extends RecyclerView.Adapter<CurrentJobAdapter.C
         return new CurrentJobAdapter.CurrentViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull CurrentJobAdapter.CurrentViewHolder holder, int position) {
-        JobCard job = listOfJob.get(position);
+        Job job = listOfJob.get(position);
         holder.BookingDetails.setText("Job Description :"+job.getJobDescription());
         holder.StartDate.setText("Start Date :"+job.getStartDate());
-        holder.Reference.setText("Reference :"+String.valueOf(job.getJobId()));
+        holder.Reference.setText("Reference :"+String.valueOf(job.getBookingId()));
         Api_String ="http://"+ Utility.IP_Adress +":5132/api/job/"+job.getJobId();
 
         holder.Complete.setOnLongClickListener(v -> {//long press for confirmation
-               showDialog(job,position,holder.getAdapterPosition()); //update this so flags the jobCard as complete
-                return true; // Return true to indicate the event was handled
+            showDialog(job,position,holder.getAdapterPosition());
+            return true; // Return true to indicate the event was handled
 
         });
         holder.itemView.setOnClickListener(v -> {
             // goes to view details activity
             Intent intent =new Intent(context, View_job_Details_Activity.class);
-          intent.putExtra("Job", job);
+            intent.putExtra("Job", job);
             intent.putExtra("bool",true);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
-    }
-    public void getJob(JobCard job)
-    {  Api_String ="http://"+ Utility.IP_Adress +":5132/api/job/"+job.getJobId();
-        Gson gson = new Gson();
-
-
-
     }
     private void removeItem(int position)
     {//removes item from the rec-list
@@ -86,7 +75,7 @@ public class CurrentJobAdapter  extends RecyclerView.Adapter<CurrentJobAdapter.C
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, listOfJob.size());
     }
-    private void showDialog(JobCard job, int position, int AdapterPosition) {
+    private void showDialog(Job job,int position,int AdapterPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirmation")
                 .setMessage("Current Job is  done?")
@@ -94,9 +83,9 @@ public class CurrentJobAdapter  extends RecyclerView.Adapter<CurrentJobAdapter.C
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Handle the Yes button click
-
-                        job.setEndDate(Utility.getCurrentDate());
-                        CompleteJob(job);//to indicate a complete job = 2 on job status;
+                        job.setJobStatus(2);
+                        job.setDateCompleted(Utility.getCurrentDate());
+                        CompleteJob(job,position);//to indicate a complete job = 2 on job status;
                         removeItem(AdapterPosition);
                     }
                 })
@@ -110,11 +99,10 @@ public class CurrentJobAdapter  extends RecyclerView.Adapter<CurrentJobAdapter.C
         builder.create().show();
     }
 
-    private void CompleteJob(JobCard job)
-    {//                                                /MECHid JOBid , sTATUS/api/Job/UpdateMechanicJobCard/
-        Api_String ="http://"+ Utility.IP_Adress +":5132/api/Job/UpdateMechanicJobCard/"+job.getJobId()+"/"+job.getMechId()+"/COMPLETE";
+    private void CompleteJob(Job job, int position)
+    {//remove it from appearing
+        Api_String ="http://"+ Utility.IP_Adress +":5132/api/job/"+job.getJobId();
         Gson gson = new Gson();
-        job.setEndDate(Utility.getCurrentDate());
         String json = gson.toJson(job);
         RequestBody body = RequestBody.create( MediaType.parse("application/json; charset=utf-8"), json);
 
@@ -133,12 +121,14 @@ public class CurrentJobAdapter  extends RecyclerView.Adapter<CurrentJobAdapter.C
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     System.out.println("Job updated successfully.");
-                    Log.d("Tester","onResponse: Job updated successfully."+response.message());
-
+                    Log.d("Tester", "onResponse: Job updated successfully.");
+                 /*   listOfJob.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, listOfJob.size());*/
 
                 } else {
                     System.out.println("Failed to update job. Response code: " + response.code());
-                    Log.d("Tester", "onResponse: "+"Failed to update job. Response code: " + response.message());
+                    Log.d("Tester", "onResponse: "+"Failed to update job. Response code: " + response.code());
                 }
             }
         });

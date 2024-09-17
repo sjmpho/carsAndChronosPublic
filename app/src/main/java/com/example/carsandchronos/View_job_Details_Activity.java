@@ -5,7 +5,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +37,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.carsandchronos.Mechanic_Activities.Mech_Assigned_Jobs;
 import com.example.carsandchronos.Models.Job;
-import com.example.carsandchronos.Models.JobCard;
 import com.example.carsandchronos.Models.booking;
 import com.example.carsandchronos.Utility.ImageUploader;
 import com.example.carsandchronos.Utility.Utility;
@@ -58,6 +60,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 
 import okhttp3.Call;
@@ -84,7 +87,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
     ImageButton imageButton,imageBack;
     ImageButton Accept,decline;
     Boolean Current_booking =false;
-    JobCard job;
+    Job job;
     private OkHttpClient client;
     int imageCounter = 0;
     int numImages = 0 ; //stores number of images
@@ -92,6 +95,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
     RelativeLayout loading_wall, ButtonBlock;
     boolean ShowButtons = false;
     TextView loading_wall_text;
+    String[] image_names;
     ProgressBar loading_wall_progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
 
             return insets;
         });
+        image_names = new String[]{"Pre-Assesment :", "In Progress :","Post Assesment :"};
         imageBack = findViewById(R.id.back_button);
         Api_String ="http://"+ Utility.IP_Adress +":5132/api/Job/";
         ButtonBlock = findViewById(R.id.below_buttons);
@@ -113,7 +118,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
         reference = findViewById(R.id.JD_reference);
         startDate = findViewById(R.id.JD_startDate);
         Vehicle =findViewById(R.id.JD_vehicleDetails);
-        imageButton =findViewById(R.id.ImageButton);
+        imageButton =findViewById(R.id.ImageButton);//this is the upload button
         job_details = findViewById(R.id.JD_job_details);
         loading_wall = findViewById(R.id.RL_loading_wall);
         loading_wall_text = findViewById(R.id.LL_text);
@@ -122,22 +127,29 @@ public class View_job_Details_Activity extends AppCompatActivity {
         retrived_images = new ArrayList<>();
 
         imageBack.setOnClickListener(v -> {
-            finish();
+            finish();//returns back to the recycler view activities
         });
         if (getIntent() != null && getIntent().hasExtra("Job")) {
-            Current_booking = getIntent().getBooleanExtra("bool",false);
-            ShowButtons = getIntent().getBooleanExtra("ShowButtons",false);
+            Current_booking = getIntent().getBooleanExtra("bool",false);//
+            ShowButtons = getIntent().getBooleanExtra("ShowButtons",false);//this is for the accept or decline buttons
             Log.d("ShowButtons", "onCreate: clicked "+getIntent().hasExtra("ShowButtons") +" and is"+ShowButtons);
-            job =(JobCard) getIntent().getSerializableExtra("Job");
+            job = (Job) getIntent().getSerializableExtra("Job");
             // Use the job object to populate the views
             Log.d("tester", "onCreate: " + job.getJobDescription());
-            Log.d("tester", "onCreate: "+job.getBookingID());
-            Booking_ID = job.getBookingID();
+            Log.d("tester", "onCreate: "+job.getBookingId());
+            Booking_ID = job.getBookingId();
             /* */
             get_BookingData(Booking_ID);
 
 
+            if(!ShowButtons)//soon to be depriciated
+            {//so that it doesnt waste time on stages that dont require images
                 RetriveImage();
+            }else
+            {
+                LoadingWall_Activator(false);
+            }
+
 
 
         }
@@ -146,25 +158,69 @@ public class View_job_Details_Activity extends AppCompatActivity {
             Log.d("ShowButtons", "onCreate: clicked");
             ButtonBlock.setVisibility(View.VISIBLE);
         }
-        if(!Current_booking)
+        if(!Current_booking && job.getJobStatus() ==2)// this makes the upload button visible
         {//if true , it keeps the upload button
-            imageButton.setVisibility(View.GONE);
+            imageButton.setVisibility(View.INVISIBLE);
         }
         Accept.setOnClickListener(v -> {
-            job.setJobStatus("PROGRESS");
+            job.setJobStatus(1);
             post_It(job);
         });
     }
-    public void post_It(JobCard job)
-    {
-        Api_String ="http://"+ Utility.IP_Adress +":5132/api/Job/UpdateMechanicJobCard/"+job.getJobId()+"/"+job.getMechId()+"/PROGRESS";
+
+    private void get_BookingData(int booking_ID) {
+        client = new OkHttpClient();
+        gson = new Gson();
+        String url = "http://" + Utility.IP_Adress + ":5132/api/Booking/get/"+ booking_ID;
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Log.d("tester", "onFailure: failed");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String json = response.body().string();
+                    booking book = gson.fromJson(json, booking.class);
+                    Log.d("tester", "onResponse: success");
+
+                    Log.d("tester", "CustomerId: " + book.getCustomerId());
+                    Log.d("tester", "ReferenceNo: " + book.getReferenceNo());
+                    Log.d("tester", "BookingDetail: " + book.getBookingDetail());
+
+                    runOnUiThread(() -> {
+                        reference.setText("Reference : " + book.getBookingId());
+                        startDate.setText("Scheduled Date : " + job.getStartDate() + " " + book.getBookingTime());
+                        Vehicle.setText("Vehicle : " + book.getVehicleMake() + " " + book.getVehicleModel() + " " + book.getVehicleYear());
+                        job_details.setText(job.getJobDescription());
+                    });
+
+                } else {
+                    Log.d("tester", "onResponse: failed with code " + response.message());
+                }
+            }
+        });
+    }
+
+
+
+
+
+    public void post_It(Job job)
+    {//this post the job to the data base , with the status
+        OkHttpClient client = new OkHttpClient();
         Gson gson = new Gson();
-        job.setEndDate(Utility.getCurrentDate());
         String json = gson.toJson(job);
         RequestBody body = RequestBody.create( MediaType.parse("application/json; charset=utf-8"), json);
 
         Request request = new Request.Builder()
-                .url(Api_String)
+                .url(Api_String+job.getJobId())
                 .put(body)
                 .build();
 
@@ -178,9 +234,11 @@ public class View_job_Details_Activity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     System.out.println("Job updated successfully.");
-                    Log.d("Tester","onResponse: Job updated successfully."+response.message());
+                    Log.d("Tester", "onResponse: Job updated successfully.");
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("deleted_position", job.getJobId());
+                    setResult(RESULT_OK, resultIntent);
                     finish();
-
                 } else {
                     System.out.println("Failed to update job. Response code: " + response.code());
                     Log.d("Tester", "onResponse: "+"Failed to update job. Response code: " + response.message());
@@ -302,8 +360,8 @@ public class View_job_Details_Activity extends AppCompatActivity {
         // Create and configure ImageView
         ImageView imageView = new ImageView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-               // LinearLayout.LayoutParams.MATCH_PARENT, // Set width to match parent
-              //  LinearLayout.LayoutParams.WRAP_CONTENT // Set height to wrap content
+                // LinearLayout.LayoutParams.MATCH_PARENT, // Set width to match parent
+                //  LinearLayout.LayoutParams.WRAP_CONTENT // Set height to wrap content
                 LinearLayout.LayoutParams.WRAP_CONTENT,500
         );
 
@@ -311,7 +369,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
         imageView.setLayoutParams(layoutParams);
 
         imageView.setImageBitmap(bitmap);
-        imageView.setScaleType(ImageView.ScaleType.CENTER);
+        // imageView.setScaleType();
         imageView.setPadding(0, 0, 0, 0);
 
         // Set click listener to open the image
@@ -320,6 +378,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
         // Add ImageView to the linear layout
         linear_layout_images.addView(imageView);
     }
+
 
     private void openImage(Bitmap bitmap) {
         // creates dialog window to view car picture
@@ -331,46 +390,6 @@ public class View_job_Details_Activity extends AppCompatActivity {
 
         dialog.show();
     }
-    private void get_BookingData(int booking_ID) {
-        client = new OkHttpClient();
-        gson = new Gson();
-        String url = "http://" + Utility.IP_Adress + ":5132/api/Booking/get/" + booking_ID;
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                Log.d("tester", "onFailure: failed");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String json = response.body().string();
-                    booking book = gson.fromJson(json, booking.class);
-                    Log.d("tester", "onResponse: success");
-
-                    Log.d("tester", "CustomerId: " + book.getCustomerId());
-                    Log.d("tester", "ReferenceNo: " + book.getReferenceNo());
-                    Log.d("tester", "BookingDetail: " + book.getBookingDetail());
-
-                    runOnUiThread(() -> {
-                        reference.setText("Reference : " + book.getBookingId());
-                        startDate.setText("Scheduled Date : " + book.getBookingDate() + " " + book.getBookingTime());
-                        Vehicle.setText("Vehicle : " + book.getVehicleMake() + " " + book.getVehicleModel() + " " + book.getVehicleYear());
-                        job_details.setText(book.getBookingDetail());
-                    });
-
-                } else {
-                    Log.d("tester", "onResponse: failed with code " + response.message());
-                }
-            }
-        });
-    }
-
 
 
     public void pickImage() {
@@ -381,90 +400,12 @@ public class View_job_Details_Activity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
-    private File bitmapToFile(Bitmap bitmap) {
-        File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "image.jpg");
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
     public void SendImage(View view) {
         pickImage();
     }
     private Uri photoUri;
 
-    private void openCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            // Create a file to store the image
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
 
-            // Continue only if the file was successfully created
-            if (photoFile != null) {
-                photoUri = FileProvider.getUriForFile(this,
-                        "com.example.carsandchronos.fileprovider", // Change to your package name
-                        photoFile);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(cameraIntent, CAMERA_INTENT_REQUEST_CODE);
-            }
-        }
-    }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        return image;
-    }
-
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
-                imageUri = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                    imageBit = bitmap;
-                    SetImages(bitmap); // Set the images received
-                    File imageFile = bitmapToFile(bitmap);
-                    uploadImage(imageFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
-                if (photoUri != null) {
-                    try {
-                        Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-                        imageBit = imageBitmap;
-                        SetImages(imageBitmap); // Set the images received
-                        File imageFile = bitmapToFile(imageBitmap);
-                        uploadImage(imageFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
 
     private void uploadImage(File file) {
         String fileName = Utility.generateRandomString()+".jpg";
@@ -474,8 +415,8 @@ public class View_job_Details_Activity extends AppCompatActivity {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("bookingId", String.valueOf(Booking_ID)) // Replace with actual booking ID
-                .addFormDataPart("file", fileName,
-                        RequestBody.create(MediaType.parse("image/jpeg"), file))
+                .addFormDataPart("file", fileName,RequestBody.create(MediaType.parse("image/jpeg"), file))
+                //.addFormDataPart("image_name")
                 .build();
 
         Request request = new Request.Builder()
@@ -518,6 +459,16 @@ public class View_job_Details_Activity extends AppCompatActivity {
             loading_wall.setVisibility(View.GONE);
         }
     }
+
+    private File bitmapToFile(Bitmap bitmap) {
+        File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "image.jpg");
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -533,6 +484,91 @@ public class View_job_Details_Activity extends AppCompatActivity {
             photoUri = Uri.parse(savedInstanceState.getString("photoUri"));
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            Bitmap bitmap = null;
+
+            try {
+                if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+                    imageUri = data.getData();
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    bitmap = rotateImageIfRequired(bitmap, imageUri);
+                } else if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
+                    if (photoUri != null) {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+                        bitmap = rotateImageIfRequired(bitmap, photoUri);
+                    }
+                }
+
+                if (bitmap != null) {
+                    Bitmap watermarkedBitmap = addWatermark(bitmap);
+
+                    imageBit = watermarkedBitmap;
+                    SetImages(watermarkedBitmap); // Set the images received
+                    File imageFile = bitmapToFile(watermarkedBitmap);
+                    uploadImage(imageFile);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+//adds the water mark to photos
+private Bitmap addWatermark(Bitmap originalBitmap) {
+    Bitmap mutableBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+    Canvas canvas = new Canvas(mutableBitmap);
+    Paint paint = new Paint();
+    paint.setColor(Color.WHITE); // Watermark text color
+    paint.setTextSize(100); // Watermark text size
+    paint.setAntiAlias(true); // Make the text smooth
+
+    // Get the current date
+    String watermarkText = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+    String complete_watermark;
+    if(job.getJobStatus() == 0)
+    {
+         complete_watermark = "Pre Assessed on : "+watermarkText;
+    } else if (job.getJobStatus() == 1) {
+        //inprogress
+        complete_watermark = "Progress on : "+ watermarkText;
+
+    }else {
+        complete_watermark = "Post Assesed on :"+ watermarkText;
+    }
+    // Get the position where to draw the watermark
+    int x = 10; // You can change this to set the horizontal position
+    int y = mutableBitmap.getHeight() - 50; // Bottom position (50 pixels from the bottom edge)
+
+    // Draw the watermark text on the canvas
+    canvas.drawText(complete_watermark, x, y, paint);
+
+    return mutableBitmap;
+}
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            // Create a file to store the image
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            // Continue only if the file was successfully created
+            if (photoFile != null) {
+                photoUri = FileProvider.getUriForFile(this,
+                        "com.example.carsandchronos.fileprovider", // Change to your package name
+                        photoFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(cameraIntent, CAMERA_INTENT_REQUEST_CODE);
+            }
+        }
+    }
+
 
     private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
         InputStream input = getContentResolver().openInputStream(selectedImage);
@@ -550,7 +586,19 @@ public class View_job_Details_Activity extends AppCompatActivity {
                 return img;
         }
     }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
+        return image;
+    }
     private Bitmap rotateImage(Bitmap img, int degree) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);

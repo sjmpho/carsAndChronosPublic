@@ -4,8 +4,16 @@ import java.io.Serializable;
 
 public class Mechanic  implements Serializable {
 
-    String name , surname,role,number,email,password;
+    String name , surname,role,number,email,password,busy;
     int mechId,leave_Status,identifier;
+
+    public String getBusy() {
+        return busy;
+    }
+
+    public void setBusy(String busy) {
+        this.busy = busy;
+    }
 
     public Mechanic() {
     }

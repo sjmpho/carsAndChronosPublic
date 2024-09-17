@@ -26,6 +26,21 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Mechanic_Activities.Notification_ViewPage"
+            android:exported="false" />
+        <activity
+            android:name=".notes_create_page"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Notes_view"
+            android:exported="false" />
+        <activity
+            android:name=".Mechanic_Activities.Analytics_view"
+            android:exported="false" />
+        <activity
+            android:name=".View_tools_requests"
+            android:exported="false" />
+        <activity
             android:name=".Mechanic_Activities.Tools_Request_Page"
             android:exported="false" />
         <activity

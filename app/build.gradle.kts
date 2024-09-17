@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.retrofit)
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -44,12 +44,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
-    implementation("androidx.exifinterface:exifinterface:1.3.3")
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.exifinterface)
 
-
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation (libs.eazegraph)
+    implementation (libs.library)
+    implementation(libs.firebase.bom.v3320)
     implementation(libs.converter.gson)// For JSON serialization/deserialization
 
 }

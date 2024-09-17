@@ -2,8 +2,11 @@ package com.example.carsandchronos.Mechanic_Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,8 +19,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.carsandchronos.JobAdapter;
 import com.example.carsandchronos.Models.Job;
-import com.example.carsandchronos.Models.JobCard;
 import com.example.carsandchronos.Models.Mechanic;
 import com.example.carsandchronos.R;
 import com.example.carsandchronos.Utility.CurrentJobAdapter;
@@ -37,13 +40,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class Mech_Current_jobs extends AppCompatActivity {
-
+    List<Job> filteredJobList = new ArrayList<>();
+    EditText Search;
     private Gson gson;
-    private int mechID;
+    private int data;
     private OkHttpClient client;
     private CurrentJobAdapter Current_jobAdapter;
-    private List<Job> jobList ;
-    List<JobCard> JobCardList;
+    private List<Job> jobList;
     RecyclerView recyclerView;
     Mechanic mechanic;
     int MechID;
@@ -61,13 +64,14 @@ public class Mech_Current_jobs extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Search = findViewById(R.id.search_edit_text);
         recyclerView = findViewById(R.id.rec_current_jobs);
         Intent intent = getIntent();
         if(intent != null)
         {
             mechanic = (Mechanic) intent.getSerializableExtra("mechanic");
             MechID = mechanic.getMechId();
-            mechID = MechID;
+            data = MechID;
 
 
             client = new OkHttpClient();
@@ -76,66 +80,78 @@ public class Mech_Current_jobs extends AppCompatActivity {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
             jobList = new ArrayList<>();
-            JobCardList = new ArrayList<>();
-            Current_jobAdapter = new CurrentJobAdapter(JobCardList,this);
+            Current_jobAdapter = new CurrentJobAdapter(jobList,this);
             recyclerView.setAdapter(Current_jobAdapter);
-            listCurrentJobCards();
-           // ListAssignedBookings();
+
+            ListAssignedBookings();
         }
 
         loading_wall = findViewById(R.id.RL_loading_wall);
         loading_wall_text = findViewById(R.id.LL_text);
         loading_wall_progressBar = findViewById(R.id.LL_progress_Bar);
-    }
-    private void listCurrentJobCards()
-    {//retrives job cards
-        String url = "http://"+ Utility.IP_Adress +":5132/api/Job/GetAllJobCardsForMechanic/" + mechID;
 
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
 
-        client.newCall(request).enqueue(new Callback() {
+        Search.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                Log.d("tester", "onFailure: failed");
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String json = response.body().string();
-                    Type bookingListType = new TypeToken<List<JobCard>>() {}.getType();
-                    List<JobCard> jobCards = gson.fromJson(json, bookingListType);
-                    Log.d("tester", "onResponse: success");
-
-                    runOnUiThread(() -> {
-                        JobCardList.clear();
-
-                        // jobList.addAll(jobs);
-                        for (JobCard jobcard: jobCards) {
-                            if (jobcard.getJobStatus().equals("PROGRESS") ||jobcard.getJobStatus().equals("PAUSED"))
-                            {
-                                JobCardList.add(jobcard);
-
-                            }
-                        }
-
-
-                        Current_jobAdapter.notifyDataSetChanged();
-                        LoadingWall_Activator();
-                    });
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d("checking", "onTextChanged: changed to "+charSequence.toString());
+                String input = String.valueOf(charSequence).trim();
+                if(input.isEmpty())
+                {
+                    Log.d("dude", "onTextChanged: it is empty");
+                    Current_jobAdapter = new CurrentJobAdapter(jobList,getApplicationContext());
+                    recyclerView.setAdapter(Current_jobAdapter);
+                    Current_jobAdapter.notifyDataSetChanged();
+                }else {
+                    filterJobs(charSequence.toString());
                 }
+
             }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
         });
 
 
+
+    }
+    private void filterJobs(String query) {
+        filteredJobList.clear();
+        if (query.isEmpty()) {
+            filteredJobList.addAll(jobList);
+        } else {
+            for (Job job : jobList) {
+
+                try{
+                    int searched_text = Integer.parseInt(query);
+                    Log.d("checkList", "filterJobs: here"+ searched_text+" must be eqaul to "+ job.getBookingId());
+                    if (searched_text == job.getBookingId()) {
+                        filteredJobList.add(job);
+                        Log.d("checkList", "filterJobs: " + filteredJobList.toString());
+                        Current_jobAdapter = new CurrentJobAdapter(filteredJobList,getApplicationContext());
+                        recyclerView.setAdapter(Current_jobAdapter);
+                        Current_jobAdapter.notifyDataSetChanged();
+                        return;
+                    }
+                }catch (Exception ex)
+                {
+                    Log.d("dude", "filterJobs: exception "+ex.getMessage());
+                }
+
+            }
+        }
+        List<Job> clere = new ArrayList<>();
+
+        Current_jobAdapter = new CurrentJobAdapter(clere,getApplicationContext());
+        recyclerView.setAdapter(Current_jobAdapter);
+        Current_jobAdapter.notifyDataSetChanged();
     }
 
-    //DEPRECIATED
     private void ListAssignedBookings() {
-        String url = "http://"+ Utility.IP_Adress +":5132/api/Job/GetAssignedJobs/" + mechID;
+        String url = "http://"+ Utility.IP_Adress +":5132/api/Job/GetAssignedJobs/" + data;
 
         Request request = new Request.Builder()
                 .url(url)

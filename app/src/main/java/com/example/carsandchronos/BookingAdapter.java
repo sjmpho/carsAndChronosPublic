@@ -64,13 +64,13 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     static class BookingViewHolder extends RecyclerView.ViewHolder {
 
-      TextView customerName,CustomerVehice,CustomerVehicleDetails;
+        TextView customerName,CustomerVehice,CustomerVehicleDetails;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
-         customerName = itemView.findViewById(R.id.Customer_name);
-         CustomerVehice = itemView.findViewById(R.id.Customer_vehicle);
-         CustomerVehicleDetails = itemView.findViewById(R.id.cutormer_vehicle_details);
+            customerName = itemView.findViewById(R.id.Customer_name);
+            CustomerVehice = itemView.findViewById(R.id.Customer_vehicle);
+            CustomerVehicleDetails = itemView.findViewById(R.id.cutormer_vehicle_details);
         }
     }
 }

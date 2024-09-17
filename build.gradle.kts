@@ -3,3 +3,9 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.googleGmsGoogleServices) apply false
 }
+
+repositories {
+    google()
+    mavenCentral()
+    maven("https://jitpack.io") // Add this line
+}

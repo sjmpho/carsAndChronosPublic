@@ -5,15 +5,35 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Utility {
+    static int MechID;
+    public static void SetMechID(int mechID)
+    {
+        Utility.MechID = mechID = 0;
+    }
+    public static int getMechID()
+    {
+        return Utility.MechID;
+    }
 
-    public static String IP_Adress ="192.168.10.249";//10.254.29.42 //
+    // Static variables to store IP address and port
+    public static String port = "";
+    public static String IP_Adress = "192.168.10.207"; // Default IP address
+
+    // Static method to set IP address and port
+    public static void setSocket(String IP_Adress, String Port) {
+        Utility.IP_Adress = IP_Adress;
+        Utility.port = Port;
+    }
+
+    // Method to get the current date in yyyy/MM/dd format
     public static String getCurrentDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+    // Method to generate a random string using UUID
     public static String generateRandomString() {
-        // Generate a random UUID and convert it to a string
         return UUID.randomUUID().toString();
     }
 }

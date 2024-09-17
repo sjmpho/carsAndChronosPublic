@@ -9,6 +9,13 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:src="@drawable/baseline_settings_24"
+        android:layout_alignParentEnd="true"
+        android:onClick="SetIP"/>
     <ImageView
         android:layout_width="250sp"
         android:id="@+id/image"
