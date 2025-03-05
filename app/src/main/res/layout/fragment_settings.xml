@@ -138,6 +138,19 @@
                 android:text="Email :ms@gmail.com"
                 android:textColor="@color/Gold"
                 android:textSize="30dp" />
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                app:dividerColor="@color/white" />
+
+            <Button
+                android:layout_marginTop="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log out"
+                android:onClick="LogOut"
+                android:backgroundTint="@color/Gold"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
     <TextView

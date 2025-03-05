@@ -84,7 +84,7 @@ public class Mech_Notifications extends AppCompatActivity {
                     runOnUiThread(() -> {
                         Notification_List.clear();
 
-                        // jobList.addAll(jobs);
+
                         for (Notification noti: notis) {
                             Notification_List.add(noti);
                         }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_btn_show_assigned"
+        android:title="Show assigned Jobs"/>
+    <item android:id="@+id/menu_btn_show_Current"
+        android:title="Show assigned Jobs"/>
+    <item android:id="@+id/menu_btn_show_All_jobs"
+        android:title="Show All Jobs"/>
+
+</menu>

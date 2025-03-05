@@ -11,8 +11,11 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -53,6 +56,7 @@ public class Mech_Assigned_Jobs extends AppCompatActivity {
     Boolean isAssignment = true;
     List<Job> filteredJobList = new ArrayList<>();
     ImageButton search;
+    int mechId;
     EditText search_text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +69,22 @@ public class Mech_Assigned_Jobs extends AppCompatActivity {
 
             return insets; });
 
+        OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
+        onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                startActivity(new Intent(getApplicationContext(),mech_main_new.class));
+
+            }
+        });
+
         recyclerView = findViewById(R.id.rec_mech_assigned);
         loading_wall = findViewById(R.id.RL_loading_wall);
         loading_wall_text = findViewById(R.id.LL_text);
         loading_wall_progressBar = findViewById(R.id.LL_progress_Bar);
         search = findViewById(R.id.search_btn);
         search_text = findViewById(R.id.search_edit_text);
-
 
         Log.d("things", "testing things: 1 ");
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -81,10 +94,8 @@ public class Mech_Assigned_Jobs extends AppCompatActivity {
         recyclerView.setAdapter(jobAdapter);
         Log.d("things", "testing things: 3 ");
         Intent intent = getIntent();
+        mechId = Utility.getMechID();
 
-        if (intent != null) {
-            Mechanic mechanic = (Mechanic) intent.getSerializableExtra("mechanic");
-            int mechId = mechanic.getMechId();
 
             jobViewModel = new ViewModelProvider(this).get(JobViewModel.class);
             jobViewModel.getJobs().observe(this, jobs -> {
@@ -103,7 +114,6 @@ public class Mech_Assigned_Jobs extends AppCompatActivity {
             });
 
             jobViewModel.fetchJobs(mechId);
-        }
 
 
     }

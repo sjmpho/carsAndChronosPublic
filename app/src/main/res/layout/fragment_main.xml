@@ -28,10 +28,8 @@ android:foregroundGravity="center"
                 app:cardCornerRadius="100dp"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:drawableTop="@drawable/notifications"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:id="@+id/tv_new_notifications"
+                    android:drawableTop="@drawable/calendar"
+                    android:id="@+id/scheduler"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_row="0"
@@ -40,11 +38,12 @@ android:foregroundGravity="center"
                     android:layout_columnSpan="1"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:text="Notifications"
+                    android:background="@color/Gold"
                     android:gravity="center"
-                    android:background="@android:color/transparent"
-                    android:padding="16dp"/>
-
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:padding="16dp"
+                    android:text="Schedule" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
@@ -129,17 +128,18 @@ android:foregroundGravity="center"
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_margin="5dp"
+                android:visibility="gone"
                 android:backgroundTint="@color/Gold"
                 app:cardCornerRadius="100dp"
                 android:layout_height="wrap_content">
                 <TextView
                     android:drawableTop="@drawable/calendar"
-                    android:id="@+id/scheduler"
+                    android:id="@+id/scheduler2"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_row="2"
-                    android:layout_rowSpan="1"
+                    android:layout_row="0"
                     android:layout_column="0"
+                    android:layout_rowSpan="1"
                     android:layout_columnSpan="1"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
@@ -150,30 +150,7 @@ android:foregroundGravity="center"
                     android:padding="16dp"
                     android:text="Schedule" />
             </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:backgroundTint="@color/Gold"
-                app:cardCornerRadius="100dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:drawableTop="@drawable/analytics"
-                    android:id="@+id/Analytics"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_row="2"
-                    android:layout_rowSpan="1"
-                    android:layout_column="1"
-                    android:layout_columnSpan="1"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@color/Gold"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:padding="16dp"
-                    android:text="Analytics" />
-            </com.google.android.material.card.MaterialCardView>
+
 
         </GridLayout>
 

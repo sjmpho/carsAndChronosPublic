@@ -161,7 +161,7 @@ public class Mech_Current_jobs extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                Log.d("tester", "onFailure: failed");
+
             }
 
             @Override
@@ -170,12 +170,11 @@ public class Mech_Current_jobs extends AppCompatActivity {
                     String json = response.body().string();
                     Type bookingListType = new TypeToken<List<Job>>() {}.getType();
                     List<Job> jobs = gson.fromJson(json, bookingListType);
-                    Log.d("tester", "onResponse: success");
 
                     runOnUiThread(() -> {
                         jobList.clear();
 
-                        // jobList.addAll(jobs);
+
                         for (Job job: jobs) {
                             if (job.getJobStatus() == 1) {
                                 jobList.add(job);

@@ -138,6 +138,7 @@
                             android:layout_height="1dp"/>
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
+                            android:layout_marginTop="15dp"
                             app:strokeColor="@color/white"
                             app:strokeWidth="2dp"
                             app:cardCornerRadius="25dp"
@@ -167,6 +168,7 @@
 
         android:layout_width="wrap_content"
         android:backgroundTint="@color/Gold"
+        android:id="@+id/cardview_display"
         app:cardCornerRadius="30dp"
         android:layout_above="@id/below_buttons"
         android:background="@color/Gold"

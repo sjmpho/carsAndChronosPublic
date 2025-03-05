@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.carsandchronos.LoginActivity;
 import com.example.carsandchronos.Models.Mechanic;
 import com.example.carsandchronos.R;
 import com.example.carsandchronos.Utility.Utility;
@@ -151,5 +152,14 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void LogOut(View view) {
+
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        Utility.SetMechID(0000);
+        Utility.setMechanic(null);
+        startActivity(intent);
+
     }
 }

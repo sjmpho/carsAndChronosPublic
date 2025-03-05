@@ -9,6 +9,7 @@
     <com.google.android.material.card.MaterialCardView
         app:strokeColor="@color/white"
         app:strokeWidth="2dp"
+        android:id="@+id/current_job_cardView"
         app:cardCornerRadius="15dp"
         android:layout_width="match_parent"
         android:backgroundTint="@color/secoundary_background_black"
@@ -61,6 +62,13 @@
                         android:layout_height="wrap_content"
                         android:text="Details :"
                         android:id="@+id/current_job_Details"/>
+                    <TextView
+                        android:textSize="20sp"
+                        android:textColor="@color/Gold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Expected Completion date :"
+                        android:id="@+id/expected_completion"/>
                 </LinearLayout>
 
                 <LinearLayout

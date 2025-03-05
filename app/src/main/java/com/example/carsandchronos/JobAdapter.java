@@ -2,6 +2,7 @@ package com.example.carsandchronos;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +11,23 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carsandchronos.Models.Job;
 import com.example.carsandchronos.Models.booking;
 import com.example.carsandchronos.Utility.Utility;
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -38,13 +45,20 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     Boolean Current_job = false;
     Boolean complete = false;
     Boolean isAssignment = false;
-
+    Date date;
+    SimpleDateFormat dateFormat;
+    String Todays_date;
     public JobAdapter(List<Job> Jobs,Context context,Boolean stat,Boolean complete,Boolean Assignment) {
         this.listOfJob = Jobs;
         this.context = context;
         this.Current_job = stat;
         this.complete = complete;
+        date = new Date();
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Todays_date = dateFormat.format(date);
+
         this.isAssignment = Assignment;
+        sortJobsByDate();
     }
     String Api_String ;
     //  url = "http://"+ Utility.IP_Adress +":5132/api/Job/GetAssignedJobs/" + data;
@@ -55,20 +69,64 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         return new JobViewHolder(view);
     }
 
+    private void sortJobsByDate() {
+        Collections.sort(listOfJob, new Comparator<Job>() {
+            @Override
+            public int compare(Job job1, Job job2) {
+                return job1.getStartDate().compareTo(job2.getStartDate());  // Ascending order
+            }
+        });
+    }
+
     @Override
     public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
         Job job = listOfJob.get(position);
         holder.Reference.setText("Reference :"+String.valueOf(job.getBookingId()));
-        holder.StartDate.setText("Start Date :"+job.getStartDate());
+        holder.StartDate.setText("Start Date :"+Utility.convertToDashFormat(job.getStartDate()));
         holder.BookingDetails.setText("Job Description :"+job.getJobDescription());
+        holder.end_detail.setText("Expected Completion date :" + Utility.convertToDashFormat(job.getEndDate()));
         Api_String ="http://"+ Utility.IP_Adress +":5132/api/Job/";
 
+       //******************************************compares dates
+
+        if(job.getJobStatus() == 1)
+        {
+            //remove
+        }
         if(complete)
         {
             holder.Decline.setVisibility(View.GONE);
             holder.Accept.setVisibility(View.GONE);
-            holder.end_detail.setVisibility(View.VISIBLE);
-            holder.end_detail.setText("Completion date :"+job.getDateCompleted());
+          //  holder.end_detail.setVisibility(View.VISIBLE);
+            holder.end_detail.setText("Completion date :"+Utility.convertToDashFormat(job.getDateCompleted()));
+        }else
+        {
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                // Parse job's start date
+                Date jobStartDate = dateFormat.parse(Utility.convertToDashFormat(job.getStartDate()));
+                Log.d("DateCheck", "here."+job.getJobDescription());
+                // Parse current date
+                Date currentDate = dateFormat.parse(Todays_date);
+                // Compare dates
+                if (jobStartDate.before(currentDate)) {
+                    // Job start date is before the current date
+                    Log.d("DateCheck", "Job start date is before the current date."+job.getJobDescription());
+                    holder.cardView.setStrokeColor(ContextCompat.getColor(context, R.color.red));
+                } else if (jobStartDate.after(currentDate)) {
+                    // Job start date is after the current date
+
+                } else {
+                    // Job start date is equal to the current date
+
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Log.d("DateCheck", "here."+e.getMessage());
+            }
+            //****************************************************************
         }
         holder.itemView.setOnClickListener(v -> {
 
@@ -148,10 +206,12 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     static class JobViewHolder extends RecyclerView.ViewHolder {
 
         TextView Reference, StartDate, BookingDetails,end_detail;
+        MaterialCardView cardView;
         ImageButton Accept, Decline;
 
         public JobViewHolder(@NonNull View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.cardView);
             end_detail = itemView.findViewById(R.id.Job_assign_Completion_date);
             Accept = itemView.findViewById(R.id.ImageButton_Accept);
             Decline = itemView.findViewById(R.id.ImageButton_Decline);

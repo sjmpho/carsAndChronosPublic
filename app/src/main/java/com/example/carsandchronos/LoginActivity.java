@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,16 +61,27 @@ public class LoginActivity extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
 
+        });
+
+
+        OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
+        onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+
+                finishAffinity();
+            }
+        });
             Email = findViewById(R.id.Login_email_ET);
             Password = findViewById(R.id.Login_password_ET);
             progressBar = findViewById(R.id.progress_circular);
             login = findViewById(R.id.Login_Button);
             GetFCM();
 
-            return insets;
 
-        });
     }
     private void ProgressBarVisible(boolean bool)
     {
@@ -146,9 +159,11 @@ public class LoginActivity extends AppCompatActivity {
                         // Store or use the mechanic object as needed
                         UserID = mechanic.getMechId();
                         Utility.SetMechID(UserID);
+                        Utility.setMechanic(mechanic);
                         sendTokenToServer();
                         Intent mechanicIntent = new Intent(LoginActivity.this, mech_main_new.class);
                         mechanicIntent.putExtra("mechanic", mechanic);
+
                         startActivity(mechanicIntent);
                         finish();
                         break;
@@ -217,8 +232,12 @@ public void GetFCM()
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed to connect to server"+e.getMessage(), Toast.LENGTH_SHORT).show());
-            }
+                runOnUiThread(() ->{
+                    ProgressBarVisible(false);
+                    Toast.makeText(LoginActivity.this, "Failed to connect to server"+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                });
+                }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
@@ -260,12 +279,14 @@ public void GetFCM()
                         Utility.setSocket(ipAddress,port);
                         // Handle the input (for example, save or validate)
                         Toast.makeText(LoginActivity.this, "IP: " + Utility.IP_Adress + ", Port: " + Utility.port, Toast.LENGTH_SHORT).show();
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss(); // Close the dialog
+
                     }
                 });
 

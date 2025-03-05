@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -18,12 +21,12 @@ import com.example.carsandchronos.Fragments.MainFragment;
 import com.example.carsandchronos.Fragments.SettingsFragment;
 import com.example.carsandchronos.Models.Mechanic;
 import com.example.carsandchronos.R;
+import com.example.carsandchronos.Utility.Utility;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class mech_main_new extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    FrameLayout frameLayout;
     TextView name ;
     int MechID;
     Mechanic mechanic;
@@ -44,16 +47,19 @@ public class mech_main_new extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.btm);
         name = findViewById(R.id.tv_name);
 
-        Intent intent = getIntent();
+        OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
+        onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
 
-        if(intent != null)
-        {
-            mechanic = (Mechanic) intent.getSerializableExtra("mechanic");
-            MechID = mechanic.getMechId();
-            name.setText(mechanic.getName()+" "+mechanic.getSurname());
-            Initailise(MechID);
+                finishAffinity();
+            }
+        });
+        mechanic = Utility.getMechanic();
+        MechID = Utility.getMechID();
+        name.setText(mechanic.getName()+" "+mechanic.getSurname());
+        Initailise(MechID);
 
-        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -2,6 +2,7 @@ package com.example.carsandchronos;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +16,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +31,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -40,6 +44,8 @@ import com.example.carsandchronos.Models.Job;
 import com.example.carsandchronos.Models.booking;
 import com.example.carsandchronos.Utility.ImageUploader;
 import com.example.carsandchronos.Utility.Utility;
+import com.example.carsandchronos.Utility.WatermarkCallback;
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -87,6 +93,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
     ImageButton imageButton,imageBack;
     ImageButton Accept,decline;
     Boolean Current_booking =false;
+    MaterialCardView cardView;
     Job job;
     private OkHttpClient client;
     int imageCounter = 0;
@@ -108,6 +115,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
 
             return insets;
         });
+        cardView = findViewById(R.id.cardview_display);
         image_names = new String[]{"Pre-Assesment :", "In Progress :","Post Assesment :"};
         imageBack = findViewById(R.id.back_button);
         Api_String ="http://"+ Utility.IP_Adress +":5132/api/Job/";
@@ -161,6 +169,7 @@ public class View_job_Details_Activity extends AppCompatActivity {
         if(!Current_booking && job.getJobStatus() ==2)// this makes the upload button visible
         {//if true , it keeps the upload button
             imageButton.setVisibility(View.INVISIBLE);
+            cardView.setVisibility(View.INVISIBLE);
         }
         Accept.setOnClickListener(v -> {
             job.setJobStatus(1);
@@ -238,13 +247,19 @@ public class View_job_Details_Activity extends AppCompatActivity {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("deleted_position", job.getJobId());
                     setResult(RESULT_OK, resultIntent);
-                    finish();
+                    Redirect();
                 } else {
                     System.out.println("Failed to update job. Response code: " + response.code());
                     Log.d("Tester", "onResponse: "+"Failed to update job. Response code: " + response.message());
                 }
             }
         });
+    }
+    private void Redirect()
+    {
+        Intent intent = new Intent(this,Mech_Assigned_Jobs.class);
+        startActivity(intent);
+        finish();
     }
 
 
@@ -504,46 +519,108 @@ public class View_job_Details_Activity extends AppCompatActivity {
                 }
 
                 if (bitmap != null) {
-                    Bitmap watermarkedBitmap = addWatermark(bitmap);
-
-                    imageBit = watermarkedBitmap;
-                    SetImages(watermarkedBitmap); // Set the images received
-                    File imageFile = bitmapToFile(watermarkedBitmap);
-                    uploadImage(imageFile);
+                    // Show watermark dialog and apply watermark after dialog closes
+                    showWatermarkDialog(bitmap, new WatermarkCallback() {
+                        @Override
+                        public void onWatermarkAdded(Bitmap watermarkedBitmap) {
+                            imageBit = watermarkedBitmap;
+                            Log.d("Watermark", "Custom Watermark: this ran before");
+                            SetImages(watermarkedBitmap); // Set the images received
+                            File imageFile = bitmapToFile(watermarkedBitmap);
+                            uploadImage(imageFile);
+                        }
+                    });
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
+
+    //*******************************************************************************
+    public void showWatermarkDialog(Bitmap originalBitmap, WatermarkCallback callback) {
+        // Use the activity context
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Image Details");
+
+        // Inflate the custom layout with an EditText
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.watermark_dialog, null);
+        EditText editText = dialogView.findViewById(R.id.watermark);
+
+        builder.setView(dialogView);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String customWatermark = editText.getText().toString().trim();
+                Bitmap watermarkedBitmap;
+
+                if (!customWatermark.isEmpty()) {
+                    // Add the watermark with user input
+                    Log.d("Watermark", "Custom Watermark: " + customWatermark);
+                    watermarkedBitmap = addWatermark(originalBitmap, customWatermark);
+                    Log.d("Watermark", "Custom Watermark: should raun after" );
+                } else {
+                    // Apply empty watermark if no input
+                    watermarkedBitmap = addWatermark(originalBitmap, "no custom ");
+                }
+
+                // Call the callback with the watermarked bitmap
+                callback.onWatermarkAdded(watermarkedBitmap);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        // Show the dialog
+        builder.create().show();
+    }
+
+    //*******************************************************************************
+
+
 //adds the water mark to photos
-private Bitmap addWatermark(Bitmap originalBitmap) {
+private Bitmap addWatermark(Bitmap originalBitmap, String custom) {
     Bitmap mutableBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
     Canvas canvas = new Canvas(mutableBitmap);
     Paint paint = new Paint();
     paint.setColor(Color.WHITE); // Watermark text color
     paint.setTextSize(100); // Watermark text size
     paint.setAntiAlias(true); // Make the text smooth
+    paint.setTextAlign(Paint.Align.LEFT); // Align text to the left
 
     // Get the current date
     String watermarkText = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     String complete_watermark;
-    if(job.getJobStatus() == 0)
-    {
-         complete_watermark = "Pre Assessed on : "+watermarkText;
+
+    if (job.getJobStatus() == 0) {
+        complete_watermark = custom + "\nPre Assessed on: " + watermarkText + " " + Utility.get_time();
     } else if (job.getJobStatus() == 1) {
-        //inprogress
-        complete_watermark = "Progress on : "+ watermarkText;
-
-    }else {
-        complete_watermark = "Post Assesed on :"+ watermarkText;
+        complete_watermark = custom + "\nProgress on: " + watermarkText + " " + Utility.get_time();
+    } else {
+        complete_watermark = "Post Assessed on: " + watermarkText + " " + Utility.get_time();
     }
-    // Get the position where to draw the watermark
-    int x = 10; // You can change this to set the horizontal position
-    int y = mutableBitmap.getHeight() - 50; // Bottom position (50 pixels from the bottom edge)
 
-    // Draw the watermark text on the canvas
-    canvas.drawText(complete_watermark, x, y, paint);
+    // Split the watermark text into multiple lines by \n
+    String[] lines = complete_watermark.split("\n");
+
+    // Starting position for the first line
+    int x = 10; // Horizontal position
+    int y = mutableBitmap.getHeight() - 200; // Starting from 200 pixels above the bottom
+
+    // Draw each line of the watermark text on the canvas
+    for (String line : lines) {
+        canvas.drawText(line, x, y, paint);
+        y += paint.getTextSize() + 10; // Move to the next line, with a little padding
+    }
 
     return mutableBitmap;
 }
@@ -606,9 +683,3 @@ private Bitmap addWatermark(Bitmap originalBitmap) {
     }
 
 }
-/****************************************************Implement loading screen*********************/
-// booking and job , include vehicle ID
-// implement loading screen
-// make potrait photos land scape , must be able to click and view the photo
-//fix past jobs activities
-//see if we could do notifications

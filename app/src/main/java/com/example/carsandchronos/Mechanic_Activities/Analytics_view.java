@@ -132,7 +132,7 @@ public class Analytics_view extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String responseBody = response.body().string();
                     rating = Integer.parseInt(responseBody);
-                    // Handle the rating value (e.g., update UI)
+
                     Log.d("Rating", "onResponse: success :"+rating);
 
                     runOnUiThread(new Runnable() {

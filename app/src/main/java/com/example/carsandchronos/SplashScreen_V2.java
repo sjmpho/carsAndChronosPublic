@@ -56,7 +56,7 @@ public class SplashScreen_V2 extends AppCompatActivity {
                 finish();
             }
         },2000);*/
-        GetFCM();
+       GetFCM();
     }
     public void GetFCM()
     {
@@ -66,7 +66,9 @@ public class SplashScreen_V2 extends AppCompatActivity {
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
                             Log.w("FCM", "Fetching FCM registration token failed", task.getException());
-                            return;
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            finish();
+
                         }
 
                         // Get new FCM registration token
@@ -76,20 +78,18 @@ public class SplashScreen_V2 extends AppCompatActivity {
                         // Send token to your server
                         Token = token;
                         loginUser(Token);
-                        // sendTokenToServer(token);
+                        //sendTokenToServer(token);
                     }
                 });
     }
-    private boolean Auto_Login(String token)
-    {
 
-        return false;
-    }
-
+//auto login
     private void loginUser(String fcm_token) {
         // Ensure the token is not null or empty
         if (fcm_token == null || fcm_token.isEmpty()) {
             Toast.makeText(SplashScreen_V2.this, "FCM token is invalid.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
             return;
         }
 
@@ -110,6 +110,9 @@ public class SplashScreen_V2 extends AppCompatActivity {
                 e.printStackTrace();
                 runOnUiThread(() -> {
                     Toast.makeText(SplashScreen_V2.this, "Failed to connect to server: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+
                 });
             }
 
@@ -122,6 +125,9 @@ public class SplashScreen_V2 extends AppCompatActivity {
                 } else {
                     runOnUiThread(() -> {
                         Toast.makeText(SplashScreen_V2.this, "Server response error.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        finish();
+
                     });
                 }
             }
@@ -145,6 +151,7 @@ public class SplashScreen_V2 extends AppCompatActivity {
                         Mechanic mechanic = gson.fromJson(userObject.toString(), Mechanic.class);
                         // Store or use the mechanic object as needed
                         UserID = mechanic.getMechId();
+                        Utility.setMechanic(mechanic);
                         Utility.SetMechID(UserID);
                         Intent mechanicIntent = new Intent(SplashScreen_V2.this, mech_main_new.class);
                         mechanicIntent.putExtra("mechanic", mechanic);
@@ -154,6 +161,9 @@ public class SplashScreen_V2 extends AppCompatActivity {
 
                     default:
                         Toast.makeText(SplashScreen_V2.this, "Unknown role", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        finish();
+
                         break;
                 }
             } else {
@@ -166,6 +176,8 @@ public class SplashScreen_V2 extends AppCompatActivity {
             e.printStackTrace();
             Log.d("tester", "run: error" + e.getMessage());
             Toast.makeText(SplashScreen_V2.this, "JSON Error occurred", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
         }
     }
 

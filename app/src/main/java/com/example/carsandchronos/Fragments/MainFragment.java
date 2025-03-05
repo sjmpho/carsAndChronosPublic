@@ -19,6 +19,7 @@ import com.example.carsandchronos.Mechanic_Activities.Mech_past_jobs;
 import com.example.carsandchronos.Mechanic_Activities.Schedule_viewer;
 import com.example.carsandchronos.Models.Mechanic;
 import com.example.carsandchronos.R;
+import com.example.carsandchronos.Utility.Utility;
 
 
 public class MainFragment extends Fragment {
@@ -41,13 +42,10 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_main, container, false);
-        if (getArguments() != null) {
-            mechanic = (Mechanic) getArguments().getSerializable(ARG_KEY);
-            Log.d("things", "onCreateView: MechID is " + mechanic.getName());
-        }
-        Analytics = view.findViewById(R.id.Analytics);
+        mechanic = Utility.getMechanic();
+
+
         schedule = view.findViewById(R.id.scheduler);
-        Notifications = view.findViewById(R.id.tv_new_notifications);
         Assigned_Jobs = view.findViewById(R.id.tv_new_Assigmened);
         Current_Jobs  = view.findViewById(R.id.tv_new_current_jobs);
         Past_Jobs     = view.findViewById(R.id.tv_new_past_jobs);
@@ -58,11 +56,7 @@ public class MainFragment extends Fragment {
             intent.putExtra("mechanic", mechanic);
             startActivity(intent);
         });
-        Notifications.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), Mech_Notifications.class);
-            intent.putExtra("mechanic", mechanic);
-            startActivity(intent);
-        });
+
         Assigned_Jobs.setOnClickListener(v -> {
             Log.d("things", "onCreateView: pressed");
             Intent intent = new Intent(getContext(), Mech_Assigned_Jobs.class);
@@ -79,11 +73,7 @@ public class MainFragment extends Fragment {
             intent.putExtra("mechanic", mechanic);
             startActivity(intent);
         });
-        Analytics.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), Analytics_view.class);
-            intent.putExtra("mechanic", mechanic);
-            startActivity(intent);
-        });
+
 
         return view;
     }
